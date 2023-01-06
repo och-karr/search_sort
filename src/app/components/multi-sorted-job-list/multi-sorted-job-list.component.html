@@ -4,7 +4,7 @@
     <form [formGroup]="sortForm">
       <div>
         <mat-form-field appearance="fill">
-          <mat-label>Choose an option</mat-label>
+          <mat-label>Choose a property</mat-label>
           <mat-select formControlName="property">
             <mat-option *ngFor="let item of properties | async" [value]="item">
               {{item}}
@@ -14,7 +14,7 @@
       </div>
       <div>
         <mat-form-field appearance="fill">
-          <mat-label>Choose an option</mat-label>
+          <mat-label>Choose a direction</mat-label>
           <mat-select formControlName="direction">
             <mat-option *ngFor="let item of directions | async" [value]="item">
               {{item}}
@@ -30,7 +30,7 @@
   <mat-card-content>
     <mat-list role="list">
       <mat-list-item role="listitem" *ngFor="let item of list$ | async">
-        {{item.title}} {{item.description}}
+        {{item.title}} - {{item.description}}
       </mat-list-item>
     </mat-list>
   </mat-card-content>

@@ -13,27 +13,35 @@ import { JobService } from '../../services/job.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MultiSortedJobListComponent {
-  readonly directions: Observable<Array<string>> = of(['asc', 'desc']);
   readonly properties: Observable<Array<string>> = of(['title', 'description']);
+  readonly directions: Observable<Array<string>> = of(['asc', 'desc']);
 
   readonly sortForm: FormGroup = new FormGroup({
-    direction: new FormControl(),
-    property: new FormControl()
+    property: new FormControl(),
+    direction: new FormControl()
   });
 
   readonly list$: Observable<JobModel[]> = combineLatest([
     this._jobService.getAll(),
-    this.sortForm.controls['direction'].valueChanges,
-    this.sortForm.controls['property'].valueChanges
+    this.sortForm.controls['property'].valueChanges,
+    this.sortForm.controls['direction'].valueChanges
   ]).pipe(
-    map(([products, direction, property]: [JobModel[], string, string]) => {
-      // console.log(sortForm)
+    map(([products, property, direction]: [JobModel[], string, string]) => {
       return products.sort((a, b) => {
-        if (a.title < b.title) {
-          return direction === 'desc' ? 1 : -1;
-        }
-        if (a.title > b.title) {
-          return direction === 'desc' ? -1 : 1;
+        if (property === 'title') {
+          if (a.title < b.title) {
+            return direction === 'desc' ? 1 : -1;
+          }
+          if (a.title > b.title) {
+            return direction === 'desc' ? -1 : 1;
+          }
+        } else if (property === 'description') {
+          if (a.description < b.description) {
+            return direction === 'desc' ? 1 : -1;
+          }
+          if (a.description > b.description) {
+            return direction === 'desc' ? -1 : 1;
+          }
         }
         return 0;
       })
